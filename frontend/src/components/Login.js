@@ -13,17 +13,18 @@ function Login() {
     }
     
     const handleLogin = () => {
-        const name = String(username);
-        const pass = String(key);
+        const name = username;
+        const pass = key;
         
         const user = {
             email: name,
             password: pass
         }
+
         console.log(user);
         
-        axios.post('/auth/login', { params: {email: name, password: pass}})
-            .then(res => console.log(res))
+        axios.post('/auth/login', user)
+            .then(res => console.log(res.data))
             .catch(err => console.log(err));
         
         //window.location.reload(true);
