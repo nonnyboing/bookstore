@@ -40,6 +40,11 @@ export class Modal extends Component {
     }
 
     handleSave() {
+        const token = this.props.token;
+        const config = {
+            headers: { Authorization: `Bearer ${token}` }
+        };
+
         const book = {
             title: this.state.title,
             author: this.state.author,
@@ -47,11 +52,12 @@ export class Modal extends Component {
             price: this.state.price
         };
 
-        axios.post('/books', book)
-            .then(res => console.log(res))
+        axios.post('/books', book, config)
+            .then(res => console.log(res.data))
             .catch(err => console.log(err));
         
-        window.location.reload(true);
+        setTimeout(()=> {window.location.reload(true)}, 1000);
+        //window.location.reload(true);
     }
 
     render() {

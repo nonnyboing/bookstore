@@ -6,8 +6,8 @@ import Modal from './components/Modal' */
 //import Login from './components/Login'
 //import Regform from './components/Regform'
 import {Navbar} from './components/Navbar'
-import Books from './components/Books';
-import Modal from './components/Modal'
+//import Books from './components/Books';
+//import Modal from './components/Modal'
 
 function App() {
   /*
@@ -24,8 +24,6 @@ function App() {
   return (
     <div className="container-responsive">
       <Navbar />
-      <Modal />
-      <Books />
     </div>
   );
 }

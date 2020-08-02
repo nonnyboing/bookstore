@@ -1,13 +1,20 @@
 import React, {useState} from 'react';
 import axios from 'axios';
+//import { useHistory } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 
 function Login() {
     const [username, setUsername] = useState('');
     const [key, setKey] = useState('');
+    const [msg, setMsg] = useState('');
+    const [token, setToken] = useState('');
+
+    //const history = useHistory();
 
     const handleChange = (e) => {
         const name = e.target.name;
         const value = e.target.value;
+        setMsg('');
 
         name === 'email' ? setUsername(value) : setKey(value);
     }
@@ -24,12 +31,31 @@ function Login() {
         console.log(user);
         
         axios.post('/auth/login', user)
-            .then(res => console.log(res.data))
-            .catch(err => console.log(err));
+            .then((res) => {
+                console.log(res.data);
+                const token = res.data.token;
+                setToken(token);
+                //history.push("/books");
+            })
+            .catch((error) => {
+                console.log(error);
+                setMsg(error.response.data);
+                console.log(msg);
+            });
         
         //window.location.reload(true);
 
     }
+
+    const renderRedirect = () => {
+        if (token) {
+          return <Redirect to={{
+              pathname: '/books',
+              state: {auth: token} 
+            }}
+          />
+        }
+      }
 
     return (
         <div className='w-50 container text-primary border border-primary rounded mt-5' style={{backgroundColor: "#fceed1"}}>
@@ -51,6 +77,11 @@ function Login() {
                     <button type='button' id='login' className='btn btn-primary btn-lg' onClick={handleLogin}>Login</button>
                 </div>
             </form>
+            <div className='text-center text-danger font-weight-bold'>
+                <p> {msg.error} </p>
+            </div>
+            {renderRedirect()}
+            
         </div>
     )
 }

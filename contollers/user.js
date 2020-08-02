@@ -1,5 +1,6 @@
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 exports.addUser = (req, res) => {
     bcrypt.hash(req.body.password, 10)
@@ -29,9 +30,14 @@ exports.login = (req, res) => {
                     if (!valid) {
                         return res.status(401).json({error: 'Incorrect Password!'})
                     }
+                    const token = jwt.sign(
+                        { userId: user._id },
+                        'RANDOM_TOKEN_SECRET',
+                        { expiresIn: '24h' }
+                    );
                     res.status(200).json({
                         userId: user._id,
-                        token: 'token'
+                        token: token
                     })
                 })
                 .catch((error) => {

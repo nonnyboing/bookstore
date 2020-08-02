@@ -4,17 +4,23 @@ import axios from 'axios';
 export const Card = (props) => {
     const { title, author, year, price } = props.mybook;
     const key = props.mybook._id;
-        
+    const token = props.token;
+
+    const config = {
+        headers: { Authorization: `Bearer ${token}` }
+    };
+    
     
     const handleClick = (event) => {
         const id = event.target.id;
         const url = '/books/'+id;
         
-        axios.delete(url)
-            .then(res=> console.log(res))
+        axios.delete(url, config)
+            .then((res)=> {console.log(res.data)})
             .catch(err => console.log(err));
 
-        window.location.reload(true);
+        setTimeout(()=> {window.location.reload(true)}, 1000);
+            //window.location.reload(true);
         
     }
 
